@@ -5,15 +5,14 @@ This module connects to the Reddit API using PRAW for listening to Reddit posts 
 comments from specified subreddits.
 """
 
-import os  # For environment variable management.
-import time  # For the 'sleep' function to pause the script during reconnection.
-import logging  # Used for structured logging.
-import praw  # Python Reddit API Wrapper (PRAW).
-import prawcore  # Used for specific exception handling.
-from dotenv import load_dotenv  # Load secrets from a local .env file.
+import os
+import time
+import logging
+import praw
+import prawcore
+from dotenv import load_dotenv
 
 
-# Creates a logger named after the module.
 logger = logging.getLogger(__name__)
 # Ensures that the logger is configured only once.
 if not logger.handlers:
@@ -44,6 +43,10 @@ def initialize_reddit():
         'REDDIT_USERNAME',
         'REDDIT_PASSWORD',
     ]
+
+    for var in required_env_vars:
+        if not os.getenv(var):
+            raise ValueError(f'Missing environment variable: {var}')
 
     logger.info('Authenticating with Reddit...')
 
